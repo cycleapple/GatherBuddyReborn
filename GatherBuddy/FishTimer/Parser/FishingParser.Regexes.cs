@@ -22,7 +22,10 @@ public partial class FishingParser
                 ClientLanguage.German   => German.Value,
                 ClientLanguage.French   => French.Value,
                 ClientLanguage.Japanese => Japanese.Value,
-                _                       => throw new InvalidEnumArgumentException(),
+                // The API13 TC Dalamud adds Chinese client-language values. Until
+                // localized chat regexes are available, keep the parser and the
+                // rest of the plugin operational with the English fallback.
+                _                       => English.Value,
             };
         }
 
