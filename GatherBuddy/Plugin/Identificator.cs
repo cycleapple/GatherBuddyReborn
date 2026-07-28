@@ -19,32 +19,14 @@ public class Identificator
     public Identificator()
     {
         _data = GatherBuddy.GameData;
-        var languagesAmount = Enum.GetValues<ClientLanguage>().Length;
-        var languages       = Array.Empty<ClientLanguage>();
-
-        if (languagesAmount == 5)
+        var languages = new[]
         {
-            languages =
-            [
-                GatherBuddy.Language,
-                (ClientLanguage)(((int)GatherBuddy.Language + 1) % 5),
-                (ClientLanguage)(((int)GatherBuddy.Language + 2) % 5),
-                (ClientLanguage)(((int)GatherBuddy.Language + 3) % 5),
-                (ClientLanguage)(((int)GatherBuddy.Language + 4) % 5),
-            ];
-        }
-        else
-        {
-            languages =
-            [
-                GatherBuddy.Language,
-                (ClientLanguage)(((int)GatherBuddy.Language + 1) % 4),
-                (ClientLanguage)(((int)GatherBuddy.Language + 2) % 4),
-                (ClientLanguage)(((int)GatherBuddy.Language + 3) % 4),
-            ];
-        }
-
-        if (languages.Length == 0) throw new InvalidEnumArgumentException();
+            GatherBuddy.Language,
+            ClientLanguage.English,
+            ClientLanguage.German,
+            ClientLanguage.French,
+            ClientLanguage.Japanese,
+        }.Distinct().ToArray();
 
         _gatherableFromLanguage = languages.Select(CreateGatherableDictionary).ToArray();
         _fishFromLanguage       = languages.Select(CreateFishDictionary).ToArray();
