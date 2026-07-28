@@ -34,8 +34,8 @@ public readonly struct MultiString(string en, string de, string fr, string jp, s
         var de = ParseSeStringLumina(gameData.GetExcelSheet<PlaceName>(ClientLanguage.German).GetRowOrDefault(id)?.Name);
         var fr = ParseSeStringLumina(gameData.GetExcelSheet<PlaceName>(ClientLanguage.French).GetRowOrDefault(id)?.Name);
         var jp = ParseSeStringLumina(gameData.GetExcelSheet<PlaceName>(ClientLanguage.Japanese).GetRowOrDefault(id)?.Name);
-        var zhCn = ParseSeStringLumina(gameData.GetExcelSheet<PlaceName>(ClientLanguage.ChineseSimplified).GetRowOrDefault(id)?.Name);
-        var zhTw = ParseSeStringLumina(gameData.GetExcelSheet<PlaceName>(ClientLanguage.ChineseTraditional).GetRowOrDefault(id)?.Name);
+        var zhCn = TryGetPlaceName(gameData, id, ClientLanguage.ChineseSimplified);
+        var zhTw = TryGetPlaceName(gameData, id, ClientLanguage.ChineseTraditional);
         return new MultiString(en, de, fr, jp, zhCn, zhTw);
     }
 
@@ -45,9 +45,33 @@ public readonly struct MultiString(string en, string de, string fr, string jp, s
         var de = ParseSeStringLumina(gameData.GetExcelSheet<Item>(ClientLanguage.German).GetRowOrDefault(id)?.Name);
         var fr = ParseSeStringLumina(gameData.GetExcelSheet<Item>(ClientLanguage.French).GetRowOrDefault(id)?.Name);
         var jp = ParseSeStringLumina(gameData.GetExcelSheet<Item>(ClientLanguage.Japanese).GetRowOrDefault(id)?.Name);
-        var zhCn = ParseSeStringLumina(gameData.GetExcelSheet<Item>(ClientLanguage.ChineseSimplified).GetRowOrDefault(id)?.Name);
-        var zhTw = ParseSeStringLumina(gameData.GetExcelSheet<Item>(ClientLanguage.ChineseTraditional).GetRowOrDefault(id)?.Name);
+        var zhCn = TryGetItemName(gameData, id, ClientLanguage.ChineseSimplified);
+        var zhTw = TryGetItemName(gameData, id, ClientLanguage.ChineseTraditional);
         return new MultiString(en, de, fr, jp, zhCn, zhTw);
+    }
+
+    private static string TryGetPlaceName(IDataManager gameData, uint id, ClientLanguage language)
+    {
+        try
+        {
+            return ParseSeStringLumina(gameData.GetExcelSheet<PlaceName>(language).GetRowOrDefault(id)?.Name);
+        }
+        catch
+        {
+            return string.Empty;
+        }
+    }
+
+    private static string TryGetItemName(IDataManager gameData, uint id, ClientLanguage language)
+    {
+        try
+        {
+            return ParseSeStringLumina(gameData.GetExcelSheet<Item>(language).GetRowOrDefault(id)?.Name);
+        }
+        catch
+        {
+            return string.Empty;
+        }
     }
 
     private string Name(ClientLanguage lang)
