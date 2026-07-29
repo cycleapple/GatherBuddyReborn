@@ -322,13 +322,13 @@ public partial class Interface
             if (!combo)
                 return;
 
-            if (ImGui.Selectable(AutoGatherConfig.SortingType.Location.ToString(), v == AutoGatherConfig.SortingType.Location))
+            if (ImGui.Selectable("依位置排序", v == AutoGatherConfig.SortingType.Location))
             {
                 GatherBuddy.Config.AutoGatherConfig.SortingMethod = AutoGatherConfig.SortingType.Location;
                 GatherBuddy.Config.Save();
             }
 
-            if (ImGui.Selectable(AutoGatherConfig.SortingType.None.ToString(), v == AutoGatherConfig.SortingType.None))
+            if (ImGui.Selectable("不排序", v == AutoGatherConfig.SortingType.None))
             {
                 GatherBuddy.Config.AutoGatherConfig.SortingMethod = AutoGatherConfig.SortingType.None;
                 GatherBuddy.Config.Save();
@@ -465,13 +465,13 @@ public partial class Interface
                 GatherBuddy.Config.Save();
             }
 
-            if (ImGui.Selectable(GatheringType.采矿工.ToString(), v == GatheringType.采矿工) && v != GatheringType.采矿工)
+            if (ImGui.Selectable("採礦工", v == GatheringType.采矿工) && v != GatheringType.采矿工)
             {
                 GatherBuddy.Config.PreferredGatheringType = GatheringType.采矿工;
                 GatherBuddy.Config.Save();
             }
 
-            if (ImGui.Selectable(GatheringType.园艺工.ToString(), v == GatheringType.园艺工) && v != GatheringType.园艺工)
+            if (ImGui.Selectable("園藝工", v == GatheringType.园艺工) && v != GatheringType.园艺工)
             {
                 GatherBuddy.Config.PreferredGatheringType = GatheringType.园艺工;
                 GatherBuddy.Config.Save();
@@ -648,21 +648,21 @@ public partial class Interface
             => DrawCheckbox("啟用釣魚統計",
                 "新增根據本機記錄彙整與回報釣魚統計的分頁。目前仍在測試。",
                 GatherBuddy.Config.EnableFishStats, b => GatherBuddy.Config.EnableFishStats = b);
-        public static void DrawEnableReportTime()  
-            => DrawCheckbox("Copy Time Stats when reporting.",
-                "When copying the report, add min and max times to the report.",
+        public static void DrawEnableReportTime()
+            => DrawCheckbox("複製報告時包含時間統計",
+                "複製報告時，加入最短與最長咬鉤時間。",
                 GatherBuddy.Config.EnableReportTime, b => GatherBuddy.Config.EnableReportTime = b);
-        public static void DrawEnableReportSize()  
-            => DrawCheckbox("Copy Sizes Stats when reporting.",
-                "When copying the report, add min and max sizes to the report.",
+        public static void DrawEnableReportSize()
+            => DrawCheckbox("複製報告時包含尺寸統計",
+                "複製報告時，加入最小與最大尺寸。",
                 GatherBuddy.Config.EnableReportSize, b => GatherBuddy.Config.EnableReportSize = b);
-        public static void DrawEnableReportMulti() 
-            => DrawCheckbox("Copy Multi Hook Stats when reporting.",
-                "When copying the report, add stats about multi-hook yields to the report.",
+        public static void DrawEnableReportMulti()
+            => DrawCheckbox("複製報告時包含多重提鉤統計",
+                "複製報告時，加入多重提鉤收穫量統計。",
                 GatherBuddy.Config.EnableReportMulti, b => GatherBuddy.Config.EnableReportMulti = b);
-        public static void DrawEnableGraphs()      
-            => DrawCheckbox("Enable Graphs.",
-                "When viewing a fishing spot, enable visualization of fish report data. Extreme Testing!",
+        public static void DrawEnableGraphs()
+            => DrawCheckbox("啟用圖表",
+                "檢視釣場時，以圖表呈現釣魚報告資料。此功能仍在高度測試階段！",
                 GatherBuddy.Config.EnableFishStatsGraphs, b => GatherBuddy.Config.EnableFishStatsGraphs = b);
 
         // Spearfishing Helper
@@ -974,7 +974,7 @@ public partial class Interface
             ImGui.TextUnformatted("選擇目標魚：");
             ImGui.SetNextItemWidth(SetInputWidth);
             
-            if (ImGui.BeginCombo("###FishSelector", _selectedFish?.Name[GatherBuddy.Language] ?? "None"))
+            if (ImGui.BeginCombo("###FishSelector", _selectedFish?.Name[GatherBuddy.Language] ?? "無"))
             {
                 ImGui.SetNextItemWidth(SetInputWidth - 20);
                 ImGui.InputTextWithHint("###FishFilter", "搜尋…", ref _fishFilterText, 100);

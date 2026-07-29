@@ -178,7 +178,7 @@ public partial class Interface
             }
 
             public override string ToName(FishRecord record)
-                => record.Catch?.Name[GatherBuddy.Language] ?? "None";
+                => record.Catch?.Name[GatherBuddy.Language] ?? "無";
 
             public override float Width
                 => 200 * ImGuiHelpers.GlobalScale;
@@ -639,10 +639,10 @@ public partial class Interface
             _plugin.FishRecorder.RemoveInvalid();
         }
 
-        ImUtf8.HoverTooltip("Delete all entries that were marked as invalid for some reason,\n"u8
-          + "as well as all entries that have a duplicate (with the same content id and timestamp).\n"u8
-          + "Usually, there should be none such entries.\n"u8
-          + "Use at your own risk, no backup will be created automatically."u8);
+        ImUtf8.HoverTooltip("刪除所有因故標記為無效的項目，\n"u8
+          + "以及內容 ID 與時間戳記皆相同的重複項目。\n"u8
+          + "通常不應存在這類項目。\n"u8
+          + "請自行承擔風險；系統不會自動建立備份。"u8);
 
         ImGui.SameLine();
         try

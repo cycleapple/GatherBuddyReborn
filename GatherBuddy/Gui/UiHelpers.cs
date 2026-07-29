@@ -119,7 +119,7 @@ public partial class Interface
 
         ImGuiUtil.HoverTooltip(tooltip);
 
-        if (ImGuiUtil.DrawDisabledButton("Default", Vector2.Zero, defaultValue, defaultValue == oldValue))
+        if (ImGuiUtil.DrawDisabledButton("預設", Vector2.Zero, defaultValue, defaultValue == oldValue))
         {
             setValue(defaultValue);
             GatherBuddy.Config.Save();
@@ -176,7 +176,7 @@ public partial class Interface
             if (GatherBuddy.GameData.OverriddenFish > 0)
             {
                 ImGui.SameLine(0, 50 * ImGuiHelpers.GlobalScale);
-                ImUtf8.Text($"{GatherBuddy.GameData.OverriddenFish} Fish Overridden");
+                ImUtf8.Text($"已覆寫 {GatherBuddy.GameData.OverriddenFish} 種魚類");
             }
         }
     }

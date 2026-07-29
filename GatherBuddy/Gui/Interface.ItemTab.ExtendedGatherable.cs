@@ -38,7 +38,7 @@ public partial class Interface
                 : data.NodeList.First().Folklore;
             Uptimes = data.NodeType switch
             {
-                NodeType.常规 => "Always",
+                NodeType.常规 => "隨時",
                 NodeType.无 => "未知",
                 _                => data.NodeList.Select(n => n.Times).Aggregate(BitfieldUptime.Combine).PrintHours(true),
             };

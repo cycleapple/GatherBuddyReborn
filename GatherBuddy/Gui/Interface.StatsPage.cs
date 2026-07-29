@@ -69,7 +69,7 @@ public partial class Interface
     private void DrawCopier()
     {
         var copyStatsString = GenerateSpotReport();
-        if (ImUtf8.Button($"Copy Fish Stats for {CosmicHandler(_selectedSpot)}"))
+        if (ImUtf8.Button($"複製 {CosmicHandler(_selectedSpot)} 的釣魚統計"))
             ImUtf8.SetClipboardText(copyStatsString);
 
         ImUtf8.HoverTooltip(copyStatsString);
@@ -252,25 +252,25 @@ public partial class Interface
 
     private void DrawFishingSpotInfo()
     {
-        ImUtf8.Text($"Coordinates: ({_selectedSpot.IntegralXCoord}, {_selectedSpot.IntegralYCoord})");
-        ImUtf8.Text($"Territory: {_selectedSpot.Territory.Name}");
+        ImUtf8.Text($"座標：({_selectedSpot.IntegralXCoord}, {_selectedSpot.IntegralYCoord})");
+        ImUtf8.Text($"區域：{_selectedSpot.Territory.Name}");
         ImGui.Separator();
 
         if (_selectedSpot.ClosestAetheryte != null)
-            ImUtf8.Text($"Closest Aetheryte: {_selectedSpot.ClosestAetheryte.Name}");
+            ImUtf8.Text($"最近的以太之光：{_selectedSpot.ClosestAetheryte.Name}");
         else
-            ImUtf8.Text("No Aetheryte found nearby.");
+            ImUtf8.Text("附近找不到以太之光。");
         ImGui.Separator();
 
         if (_selectedSpot.Items.Any())
         {
-            ImUtf8.Text("Available Fish:");
+            ImUtf8.Text("可釣魚類：");
             foreach (var fish in _selectedSpot.Items)
                 ImUtf8.Text("- " + fish.Name[GatherBuddy.Language]);
         }
         else
         {
-            ImUtf8.Text("No fish available.");
+            ImUtf8.Text("沒有可釣魚類。");
         }
     }
 
@@ -308,7 +308,7 @@ public partial class Interface
             foreach (var (baitId, entries) in baitGroups)
             {
                 var bait = GatherBuddy.GameData.Bait.GetValueOrDefault(baitId);
-                ImUtf8.BulletText($"Bait: {bait?.Name ?? "Unknown"}");
+                ImUtf8.BulletText($"釣餌：{bait?.Name ?? "未知"}");
 
                 DrawAmountCaught(entries.Count);
                 DrawCatchPercentage(entries, recordsAtSpot.Count(r => r.BaitId == baitId));
@@ -458,13 +458,13 @@ public partial class Interface
 
     private static void DrawAmountCaught(int count)
     {
-        ImUtf8.Text($"Caught: {count} times");
+        ImUtf8.Text($"捕獲次數：{count}");
     }
 
     private static void DrawCatchPercentage(List<FishRecord> entries, int baitTotal)
     {
         var percentage = entries.Count / (float)baitTotal * 100f;
-        ImUtf8.Text($"Percent of baited catches: {percentage:F2}");
+        ImUtf8.Text($"使用此釣餌的捕獲比例：{percentage:F2}%");
     }
 
     private static void DrawBiteTimeHistogram(List<FishRecord> entries)

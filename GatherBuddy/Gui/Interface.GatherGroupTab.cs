@@ -162,8 +162,8 @@ public partial class Interface
         {
             Selector = new GatherGroupSelector(gatherGroupManager);
             DefaultGroupTooltip =
-                "Restore the gather groups provided by default if they have been deleted or changed in any way.\n"
-              + "Hold Control to apply. Default Groups are:\n\t- "
+                "若預設採集組遭到刪除或修改，可將其還原。\n"
+              + "按住 Ctrl 套用。預設採集組如下：\n\t- "
               + $"{string.Join("\n\t- ", GroupData.DefaultGroups.Select(g => g.Name))}";
         }
     }
@@ -199,15 +199,15 @@ public partial class Interface
         var       width = 20 * ImGuiHelpers.GlobalScale;
         using var group = ImRaii.Group();
 
-        ImGui.Text(" from ");
+        ImGui.Text(" 從 ");
         ImGui.SameLine();
         DrawTimeInput("##from", width, fromValue, v => setter(v, toValue));
         ImGui.SameLine();
-        ImGui.Text(" to ");
+        ImGui.Text(" 到 ");
         ImGui.SameLine();
         DrawTimeInput("##to", width, toValue, v => setter(fromValue, v));
         ImGui.SameLine();
-        ImGui.Text(" Eorzea Time");
+        ImGui.Text(" 艾歐澤亞時間");
     }
 
     private static void DrawLocationTooltip(ILocation? loc)
