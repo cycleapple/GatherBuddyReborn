@@ -76,11 +76,11 @@ public class GatherWindow : Window
     {
         var sb = new StringBuilder();
         sb.Append(loc == null
-            ? "Unknown Location\nUnknown Territory\nUnknown Aetheryte\n"
+            ? "未知地點\n未知區域\n未知傳送點\n"
             : $"{loc.Name}\n{loc.Territory.Name}\n{loc.ClosestAetheryte?.Name ?? "No Aetheryte"}\n");
 
         sb.Append(time.Equals(TimeInterval.Always)
-            ? "Always Up"
+            ? "隨時可用"
             : $"{time.Start}\n{time.End}\n{time.DurationString()}\n{TimeInterval.DurationString(time.Start > GatherBuddy.Time.ServerTime ? time.Start : time.End, GatherBuddy.Time.ServerTime, false)}");
 
         return sb.ToString();
@@ -324,7 +324,7 @@ public class GatherWindow : Window
     {
         var       colorId = GatherBuddy.AutoGather.Enabled ? ColorId.GatherWindowAvailable.Value() : ColorId.GatherWindowText.Value();
         using var color = ImRaii.PushColor(ImGuiCol.Text, colorId);
-        if (ImGui.Selectable($"自动采集: {GatherBuddy.AutoGather.AutoStatus}###toggle-button"))
+        if (ImGui.Selectable($"自動採集: {GatherBuddy.AutoGather.AutoStatus}###toggle-button"))
         {
             GatherBuddy.AutoGather.Enabled = !GatherBuddy.AutoGather.Enabled;
         }
@@ -333,7 +333,7 @@ public class GatherWindow : Window
             _plugin.Interface.Toggle();
         }
         color.Pop();
-        ImGuiUtil.HoverTooltip("点击以启用/禁用自动采集, 右键以开关插件界面");
+        ImGuiUtil.HoverTooltip("點選以啟用/禁用自動採集, 右鍵以開關外掛介面");
         using var table = ImRaii.Table("##table", GatherBuddy.Config.ShowGatherWindowTimers ? 2 : 1);
         if (!table)
             return;

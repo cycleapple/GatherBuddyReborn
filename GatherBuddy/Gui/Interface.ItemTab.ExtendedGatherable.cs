@@ -39,7 +39,7 @@ public partial class Interface
             Uptimes = data.NodeType switch
             {
                 NodeType.常规 => "Always",
-                NodeType.无 => "Unknown",
+                NodeType.无 => "未知",
                 _                => data.NodeList.Select(n => n.Times).Aggregate(BitfieldUptime.Combine).PrintHours(true),
             };
             Level     = Data.LevelString();

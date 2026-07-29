@@ -25,19 +25,19 @@ public static class SpearFishSpeedExtensions
     public static string ToName(this SpearfishSpeed speed)
         => speed switch
         {
-            SpearfishSpeed.Unknown       => "Unknown Speed",
-            SpearfishSpeed.SuperSlow     => "Super Slow",
-            SpearfishSpeed.ExtremelySlow => "Extremely Slow",
-            SpearfishSpeed.VerySlow      => "Very Slow",
-            SpearfishSpeed.Slow          => "Slow",
-            SpearfishSpeed.Average       => "Average",
-            SpearfishSpeed.Fast          => "Fast",
-            SpearfishSpeed.VeryFast      => "Very Fast",
-            SpearfishSpeed.ExtremelyFast => "Extremely Fast",
-            SpearfishSpeed.SuperFast     => "Super Fast",
-            SpearfishSpeed.HyperFast     => "Hyper Fast",
-            SpearfishSpeed.LynFast       => "Mega Fast",
-            SpearfishSpeed.None          => "No Speed",
+            SpearfishSpeed.Unknown       => "未知速度",
+            SpearfishSpeed.SuperSlow     => "極慢",
+            SpearfishSpeed.ExtremelySlow => "非常慢",
+            SpearfishSpeed.VerySlow      => "很慢",
+            SpearfishSpeed.Slow          => "慢",
+            SpearfishSpeed.Average       => "中等",
+            SpearfishSpeed.Fast          => "快",
+            SpearfishSpeed.VeryFast      => "很快",
+            SpearfishSpeed.ExtremelyFast => "非常快",
+            SpearfishSpeed.SuperFast     => "極快",
+            SpearfishSpeed.HyperFast     => "超快",
+            SpearfishSpeed.LynFast       => "超高速",
+            SpearfishSpeed.None          => "無速度資訊",
             _                            => $"{(ushort)speed}",
         };
 }

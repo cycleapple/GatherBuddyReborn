@@ -44,15 +44,15 @@ public partial class Interface
             _typeColumnWidth      = Enum.GetValues<GatheringType>().Max(t => TextWidth(t.ToString())) / ImGuiHelpers.GlobalScale;
         }
 
-        private static readonly NameColumn      _nameColumn      = new() { Label = "名称" };
-        private static readonly TypeColumn      _typeColumn      = new() { Label = "类型" };
-        private static readonly TerritoryColumn _territoryColumn = new() { Label = "区域" };
-        private static readonly LevelColumn     _levelColumn     = new() { Label = "等级" };
-        private static readonly AetheryteColumn _aetheryteColumn = new() { Label = "传送点" };
-        private static readonly XCoordColumn    _xCoordColumn    = new() { Label = "X坐标" };
-        private static readonly YCoordColumn    _yCoordColumn    = new() { Label = "Y坐标" };
-        private static readonly RadiusColumn    _radiusColumn    = new() { Label = "半径" };
-        private static readonly MarkerColumn    _markerColumn    = new() { Label = "标记" };
+        private static readonly NameColumn      _nameColumn      = new() { Label = "名稱" };
+        private static readonly TypeColumn      _typeColumn      = new() { Label = "型別" };
+        private static readonly TerritoryColumn _territoryColumn = new() { Label = "區域" };
+        private static readonly LevelColumn     _levelColumn     = new() { Label = "等級" };
+        private static readonly AetheryteColumn _aetheryteColumn = new() { Label = "傳送點" };
+        private static readonly XCoordColumn    _xCoordColumn    = new() { Label = "X座標" };
+        private static readonly YCoordColumn    _yCoordColumn    = new() { Label = "Y座標" };
+        private static readonly RadiusColumn    _radiusColumn    = new() { Label = "半徑" };
+        private static readonly MarkerColumn    _markerColumn    = new() { Label = "標記" };
         private static readonly ItemColumn      _itemColumn      = new() { Label = "物品" };
 
         private sealed class NameColumn : ColumnString<ILocation>
@@ -196,7 +196,7 @@ public partial class Interface
                     _plugin.LocationManager.SetAetheryte(location, _aetherytes[newIdx]);
                 if (overwritten)
                 {
-                    ImGuiUtil.HoverTooltip($"单击鼠标右键以重载默认设置 ({location.DefaultAetheryte?.Name ?? "None"})");
+                    ImGuiUtil.HoverTooltip($"按滑鼠右鍵以還原預設設定 ({location.DefaultAetheryte?.Name ?? "None"})");
                     if (ImGui.IsItemClicked(ImGuiMouseButton.Right))
                         _plugin.LocationManager.SetAetheryte(location, location.DefaultAetheryte);
                 }
@@ -221,7 +221,7 @@ public partial class Interface
                     _plugin.LocationManager.SetXCoord(location, (int)(x * 100f + 0.5f));
                 if (overwritten)
                 {
-                    ImGuiUtil.HoverTooltip($"单击鼠标右键以重载默认设置 ({location.DefaultXCoord / 100f:0.00})");
+                    ImGuiUtil.HoverTooltip($"按滑鼠右鍵以還原預設設定 ({location.DefaultXCoord / 100f:0.00})");
                     if (ImGui.IsItemClicked(ImGuiMouseButton.Right))
                         _plugin.LocationManager.SetXCoord(location, location.DefaultXCoord);
                 }
@@ -249,7 +249,7 @@ public partial class Interface
                     _plugin.LocationManager.SetYCoord(location, (int)(y * 100f + 0.5f));
                 if (overwritten)
                 {
-                    ImGuiUtil.HoverTooltip($"单击鼠标右键以重载默认设置 ({location.DefaultYCoord / 100f:0.00})");
+                    ImGuiUtil.HoverTooltip($"按滑鼠右鍵以還原預設設定 ({location.DefaultYCoord / 100f:0.00})");
                     if (ImGui.IsItemClicked(ImGuiMouseButton.Right))
                         _plugin.LocationManager.SetYCoord(location, location.DefaultYCoord);
                 }
@@ -277,7 +277,7 @@ public partial class Interface
                     _plugin.LocationManager.SetRadius(location, Math.Clamp((ushort)radius, (ushort)0, IMarkable.RadiusMax));
                 if (overwritten)
                 {
-                    ImGuiUtil.HoverTooltip($"单击鼠标右键以重载默认设置 ({location.DefaultRadius})");
+                    ImGuiUtil.HoverTooltip($"按滑鼠右鍵以還原預設設定 ({location.DefaultRadius})");
                     if (ImGui.IsItemClicked(ImGuiMouseButton.Right))
                         _plugin.LocationManager.SetRadius(location, location.DefaultRadius);
                 }
@@ -347,9 +347,9 @@ public partial class Interface
                 var       markerCount   = markers.CountSet;
                 var       locationCount = location.Markers.CountSet;
                 var       invalid       = Dalamud.ClientState.TerritoryType != location.Territory.Id;
-                var tt = invalid     ? "不在此位置的对应的目标区域" :
-                    markerCount == 0 ? "无此位置可用的标记信息." :
-                                       $"为此位置存储当前已放置的标记信息:\n\n{string.Join("\n", markers.Select(m => float.IsNaN(m.X) ? " - " : $"{m.X:F2} - {m.Y:F2} - {m.Z:F2}"))}";
+                var tt = invalid     ? "不在此位置的對應的目標區域" :
+                    markerCount == 0 ? "無此位置可用的標記資訊." :
+                                       $"為此位置儲存當前已放置的標記資訊:\n\n{string.Join("\n", markers.Select(m => float.IsNaN(m.X) ? " - " : $"{m.X:F2} - {m.Y:F2} - {m.Z:F2}"))}";
 
                 if (locationCount > 0)
                     tt +=
@@ -361,7 +361,7 @@ public partial class Interface
 
                 ImGui.SameLine();
                 tt = locationCount == 0
-                    ? "No markers stored for this location."
+                    ? "此地點沒有儲存的標記。"
                     : $"Remove the stored markers for this location:\n\n{string.Join("\n", location.Markers.Select(m => float.IsNaN(m.X) ? " - " : $"{m.X:F2} - {m.Y:F2} - {m.Z:F2}"))}";
                 if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Trash.ToIconString(), new Vector2(ImGui.GetFrameHeight()), tt,
                         locationCount == 0, true))
@@ -379,8 +379,8 @@ public partial class Interface
 
     private void DrawLocationsTab()
     {
-        using var id  = ImRaii.PushId("Locations");
-        using var tab = ImRaii.TabItem("地点");
+        using var id  = ImRaii.PushId("地點");
+        using var tab = ImRaii.TabItem("地點");
 
         if (!tab)
             return;

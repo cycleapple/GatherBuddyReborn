@@ -50,7 +50,7 @@ public partial class Interface
             var spots = Locations.Values.ToList();
             _fishingSpotCombo = new ClippedSelectableCombo<FishingSpot>(
                 "FishingSpotSelector",
-                "Fishing Spot",
+                "釣場",
                 500,
                 spots,
                 CosmicHandler
@@ -188,11 +188,11 @@ public partial class Interface
 
                     var normal = Classify(
                         fishRecords.Where(r => !r.Flags.HasFlag(Effects.Large) && !r.Flags.HasFlag(Effects.BigGameFishing)),
-                        "Average");
+                        "中等");
 
                     var large = Classify(
                         fishRecords.Where(r => r.Flags.HasFlag(Effects.Large) && !r.Flags.HasFlag(Effects.BigGameFishing)),
-                        "Large");
+                        "大型");
 
                     var bgf = Classify(
                         fishRecords.Where(r => r.Flags.HasFlag(Effects.BigGameFishing)),
@@ -430,8 +430,8 @@ public partial class Interface
 
         // Titles
         drawList.AddText(new Vector2(cursor.X + leftMargin + chartWidth * 0.5f - 20f, origin.Y + 20f), ImGui.GetColorU32(ImGuiCol.Text),
-            "Size");
-        drawList.AddText(ImGui.GetFont(), ImGui.GetFontSize(), new Vector2(cursor.X + 5f, cursor.Y), ImGui.GetColorU32(ImGuiCol.Text), "Count");
+            "尺寸");
+        drawList.AddText(ImGui.GetFont(), ImGui.GetFontSize(), new Vector2(cursor.X + 5f, cursor.Y), ImGui.GetColorU32(ImGuiCol.Text), "數量");
 
         // Legend
         var legendX = origin.X + chartWidth + 10f;
@@ -441,8 +441,8 @@ public partial class Interface
             var sizeName =
                 new List<string>
                 {
-                    "Average",
-                    "Large",
+                    "中等",
+                    "大型",
                     "Big Game Fishing",
                 }[i];
             var label = $"{sizeName}";
@@ -714,8 +714,8 @@ public partial class Interface
 
         // Titles
         drawList.AddText(new Vector2(cursor.X + leftMargin + chartWidth * 0.5f - 20f, origin.Y + 20f), ImGui.GetColorU32(ImGuiCol.Text),
-            "Bite Time");
-        drawList.AddText(ImGui.GetFont(), ImGui.GetFontSize(), new Vector2(cursor.X + 5f, cursor.Y), ImGui.GetColorU32(ImGuiCol.Text), "Count");
+            "咬鉤時間");
+        drawList.AddText(ImGui.GetFont(), ImGui.GetFontSize(), new Vector2(cursor.X + 5f, cursor.Y), ImGui.GetColorU32(ImGuiCol.Text), "數量");
 
         // Legend
         var legendX = origin.X + chartWidth + 10f;
@@ -766,9 +766,9 @@ public partial class Interface
             return;
 
         _records = _plugin.FishRecorder.Records;
-        using var id  = ImUtf8.PushId("Fishing Spots Stats"u8);
-        using var tab = ImUtf8.TabItem("Fishing Spots Stats"u8);
-        ImUtf8.HoverTooltip("Aggregator of Fish Record data in a presentable format"u8);
+        using var id  = ImUtf8.PushId("釣場統計"u8);
+        using var tab = ImUtf8.TabItem("釣場統計"u8);
+        ImUtf8.HoverTooltip("將釣魚記錄彙整為容易閱讀的統計資料"u8);
 
         if (!tab)
             return;

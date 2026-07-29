@@ -45,7 +45,7 @@ public partial class Interface
         private sealed class ZoneHeader : ColumnString<CachedWeather>
         {
             public ZoneHeader()
-                => Label = "筛选区域...";
+                => Label = "篩選區域...";
 
             public override float Width
                 => _zoneSize * ImGuiHelpers.GlobalScale;
@@ -166,8 +166,8 @@ public partial class Interface
 
     private void DrawWeatherTab()
     {
-        using var id  = ImRaii.PushId("Weather");
-        using var tab = ImRaii.TabItem("天气");
+        using var id  = ImRaii.PushId("天氣");
+        using var tab = ImRaii.TabItem("天氣");
 
         if (!tab)
             return;

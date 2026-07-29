@@ -18,7 +18,7 @@ public partial class Interface
 {
     internal static bool DrawLocationInput(IGatherable item, ILocation? current, out ILocation? ret)
     {
-        const string noPreferred = "No Preferred Location";
+        const string noPreferred = "無偏好地點";
         var          width       = SetInputWidth * 0.85f;
         ret = current;
         if (item.Locations.Count() == 1)
@@ -81,7 +81,7 @@ public partial class Interface
             using var tt = ImRaii.Tooltip();
 
             if (uptimeDependency)
-                ImUtf8.TextFramed("Uptime Dependency"u8, 0xFF202080);
+                ImUtf8.TextFramed("出現時段相依條件"u8, 0xFF202080);
 
             if (!char.IsLetter(timeString[0]))
                 ImUtf8.Text($"{uptime.Start}\n{uptime.End}\n{uptime.DurationString()}");
@@ -138,11 +138,11 @@ public partial class Interface
         ImGui.SameLine();
         using var style = ImRaii.PushStyle(ImGuiStyleVar.ItemSpacing, Vector2.Zero);
         ImGui.NewLine();
-        ImUtf8.Text($"{table.CurrentItems} / {table.TotalItems} {name} 可见");
+        ImUtf8.Text($"{table.CurrentItems} / {table.TotalItems} {name} 可見");
         if (table.TotalColumns != table.VisibleColumns)
         {
             ImGui.SameLine(0, 50 * ImGuiHelpers.GlobalScale);
-            ImUtf8.Text($"{table.TotalColumns - table.VisibleColumns} 列被隐藏");
+            ImUtf8.Text($"{table.TotalColumns - table.VisibleColumns} 列被隱藏");
         }
 
         if (typeof(T) == typeof(ExtendedFish))
@@ -150,7 +150,7 @@ public partial class Interface
             if (File.Exists(GatherBuddy.GameData.OverrideFile))
             {
                 ImGui.SameLine(0, 50 * ImGuiHelpers.GlobalScale);
-                if (ImUtf8.SmallButton("Reimport Fish Overrides") && GatherBuddy.GameData.ReimportOverrides())
+                if (ImUtf8.SmallButton("重新匯入魚類覆寫資料") && GatherBuddy.GameData.ReimportOverrides())
                 {
                     GatherBuddy.UptimeManager.ResetModifiedUptimes();
                     foreach (var fish in ExtendedFishList.Where(f => f.Data.HasOverridenData))
@@ -161,7 +161,7 @@ public partial class Interface
             using (var popup = ImUtf8.PopupContextItem("##Context"u8))
             {
                 if (popup)
-                    if (ImUtf8.MenuItem("Move to Backup"u8))
+                    if (ImUtf8.MenuItem("移至備份"u8))
                         try
                         {
                             File.Move(GatherBuddy.GameData.OverrideFile, Path.ChangeExtension(GatherBuddy.GameData.OverrideFile, ".json.bak"),
@@ -207,8 +207,8 @@ public partial class Interface
             GatherBuddy.Config.Save();
         }
 
-        ImGuiUtil.HoverTooltip("单击以打开本表的使用帮助.\n"
-          + "按住 Ctrl + Shift 键右键本按钮以永久隐藏");
+        ImGuiUtil.HoverTooltip("單擊以開啟本表的使用幫助.\n"
+          + "按住 Ctrl + Shift 鍵右鍵本按鈕以永久隱藏");
 
         color.Pop();
         var windowSize = new Vector2(1024 * ImGuiHelpers.GlobalScale,
@@ -221,24 +221,24 @@ public partial class Interface
             return;
 
         ImGui.BulletText(
-            "可以使用诸如 \"物品名称...\" 之类的文本过滤器，只显示包含指定字符串的条目。它们对大小写不敏感，并且不会保存");
+            "可以使用諸如 \"物品名稱...\" 之類的文字過濾器，只顯示包含指定字串的條目。它們對大小寫不敏感，並且不會儲存");
         ImGui.BulletText(
-            "文本过滤器还支持正则表达式，例如 \"(blue|green)\" 会匹配所有包含蓝色或绿色的条目。");
-        ImGui.BulletText("类似 \"下次时间\"、\"采集点类型\" 或 \"鱼类类型\" 的按钮过滤器可以通过点击来过滤特定类型。");
-        ImGui.BulletText("这些过滤器会保存。但对于具有活动过滤器的列，过滤按钮会变为红色");
+            "文字過濾器還支援正規表示式，例如 \"(blue|green)\" 會匹配所有包含藍色或綠色的條目。");
+        ImGui.BulletText("類似 \"下次時間\"、\"採集點型別\" 或 \"魚類型別\" 的按鈕過濾器可以透過點選來過濾特定型別。");
+        ImGui.BulletText("這些過濾器會儲存。但對於具有活動過濾器的列，過濾按鈕會變為紅色");
         ImGui.NewLine();
         ImGui.BulletText(
-            "可以点击标题空白处来按该列对表格进行升序或降序排序，这会通过一个向上或向下的小三角形来表示");
+            "可以點選標題空白處來按該列對錶格進行升序或降序排序，這會透過一個向上或向下的小三角形來表示");
         ImGui.BulletText(
-            "可以右键点击标题空白处来打开表格上下文菜单，在其中可以隐藏不感兴趣的列");
+            "可以右鍵點選標題空白處來開啟表格上下文選單，在其中可以隱藏不感興趣的列");
         ImGui.BulletText(
-            "可以通过拖动列的分隔线来调整文本列的大小。调整时会以蓝色高亮显示分隔线。大小会在会话之间保存");
+            "可以透過拖動列的分隔線來調整文字列的大小。調整時會以藍色高亮顯示分隔線。大小會在會話之間儲存");
         ImGui.BulletText(
-            "可以通过在空白处左键点击并拖动来重新排列大多数列。排列顺序会在会话之间保存");
+            "可以透過在空白處左鍵點選並拖動來重新排列大多數列。排列順序會在會話之間儲存");
         ImGui.NewLine();
         ImGui.BulletText(
-            "可以右键点击物品名称和其他一些列（如鱼饵和钓鱼地点）来打开带有对象特定选项的右键菜单");
-        ImGui.BulletText("你也可以重新排列标签页，但无法保存");
+            "可以右鍵點選物品名稱和其他一些列（如魚餌和釣魚地點）來開啟帶有物件特定選項的右鍵選單");
+        ImGui.BulletText("你也可以重新排列標籤頁，但無法儲存");
 
         ImGui.SetCursorPosY(windowSize.Y - ImGui.GetFrameHeight() - ImGui.GetStyle().WindowPadding.Y);
         if (ImGui.Button("明白了", -Vector2.UnitX))

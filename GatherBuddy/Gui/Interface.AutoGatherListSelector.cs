@@ -90,7 +90,7 @@ public partial class Interface
         private void AddListButton(Vector2 size)
         {
             const string newListName = "newListName";
-            if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Plus.ToIconString(), size, "Create a new auto-gather list.", false, true))
+            if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Plus.ToIconString(), size, "建立新的自動採集列表。", false, true))
                 ImGui.OpenPopup(newListName);
 
             string name = string.Empty;
@@ -104,7 +104,7 @@ public partial class Interface
         private void ImportFromClipboardButton(Vector2 size)
         {
             const string importName = "importListName";
-            if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Clipboard.ToIconString(), size, "Import an auto-gather list from clipboard.", false, true))
+            if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Clipboard.ToIconString(), size, "從剪貼簿匯入自動採集列表。", false, true))
                 ImGui.OpenPopup(importName);
 
             string name = string.Empty;
@@ -122,28 +122,28 @@ public partial class Interface
 
         private void MoveUpContext(FileSystem<AutoGatherList>.Leaf leaf)
         {
-            if (ImGui.MenuItem("Move Up"))
+            if (ImGui.MenuItem("上移"))
                 _plugin.AutoGatherListsManager.MoveListUp(leaf.Value);
         }
 
         private void MoveDownContext(FileSystem<AutoGatherList>.Leaf leaf)
         {
-            if (ImGui.MenuItem("Move Down"))
+            if (ImGui.MenuItem("下移"))
                 _plugin.AutoGatherListsManager.MoveListDown(leaf.Value);
         }
 
         private void DeleteListContext(FileSystem<AutoGatherList>.Leaf leaf)
         {
-            if (ImGui.MenuItem("Delete List"))
+            if (ImGui.MenuItem("刪除列表"))
                 _plugin.AutoGatherListsManager.DeleteList(leaf.Value);
         }
 
         private void DuplicateListContext(FileSystem<AutoGatherList>.Leaf leaf)
         {
-            if (ImGui.MenuItem("Duplicate List"))
+            if (ImGui.MenuItem("複製列表"))
             {
                 var clone = leaf.Value.Clone();
-                clone.Name = $"{leaf.Value.Name} (Copy)";
+                clone.Name = $"{leaf.Value.Name}（副本）";
                 _plugin.AutoGatherListsManager.AddList(clone, leaf.Parent);
             }
         }
@@ -151,24 +151,24 @@ public partial class Interface
         private void ToggleListContext(FileSystem<AutoGatherList>.Leaf leaf)
         {
             var list = leaf.Value;
-            if (ImGui.MenuItem(list.Enabled ? "Disable" : "Enable"))
+            if (ImGui.MenuItem(list.Enabled ? "停用" : "啟用"))
                 _plugin.AutoGatherListsManager.ToggleList(list);
         }
 
         private void ExportListContext(FileSystem<AutoGatherList>.Leaf leaf)
         {
-            if (ImGui.MenuItem("Export to Clipboard"))
+            if (ImGui.MenuItem("匯出至剪貼簿"))
             {
                 try
                 {
                     var config = new AutoGatherList.Config(leaf.Value);
                     var base64 = config.ToBase64();
                     ImGui.SetClipboardText(base64);
-                    Communicator.PrintClipboardMessage("Auto-gather list", leaf.Value.Name);
+                    Communicator.PrintClipboardMessage("自動採集列表", leaf.Value.Name);
                 }
                 catch (Exception e)
                 {
-                    Communicator.PrintClipboardMessage("Auto-gather list", leaf.Value.Name, e);
+                    Communicator.PrintClipboardMessage("自動採集列表", leaf.Value.Name, e);
                 }
             }
         }
@@ -176,7 +176,7 @@ public partial class Interface
         private void CreateFolderContext(FileSystem<AutoGatherList>.Folder folder)
         {
             const string newFolderName = "newFolderName";
-            if (ImGui.MenuItem("Create Subfolder"))
+            if (ImGui.MenuItem("建立子資料夾"))
                 ImGui.OpenPopup(newFolderName);
 
             string name = string.Empty;
@@ -191,7 +191,7 @@ public partial class Interface
             if (folder.IsRoot)
                 return;
 
-            if (ImGui.MenuItem("Delete Folder"))
+            if (ImGui.MenuItem("刪除資料夾"))
             {
                 _plugin.AutoGatherListsManager.DeleteFolder(folder);
             }

@@ -21,14 +21,14 @@ public static class HookSetExtensions
     public static string ToName(this HookSet value)
         => value switch
         {
-            HookSet.Unknown    => "Unknown",
-            HookSet.Precise    => "Precise",
-            HookSet.Powerful   => "Powerful",
-            HookSet.Hook       => "Regular",
-            HookSet.DoubleHook => "Double",
-            HookSet.TripleHook => "Triple",
-            HookSet.Stellar    => "Stellar",
+            HookSet.Unknown    => "未知",
+            HookSet.Precise    => "精準提鉤",
+            HookSet.Powerful   => "強力提鉤",
+            HookSet.Hook       => "一般提鉤",
+            HookSet.DoubleHook => "雙重提鉤",
+            HookSet.TripleHook => "三重提鉤",
+            HookSet.Stellar    => "星極提鉤",
             HookSet.None       => "None",
-            _                  => "Invalid",
+            _                  => "無效",
         };
 }

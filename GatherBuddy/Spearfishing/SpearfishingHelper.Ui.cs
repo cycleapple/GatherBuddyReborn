@@ -73,7 +73,7 @@ public partial class SpearfishingHelper : Window
             var name = fish.Name[GatherBuddy.Language];
             if (GatherBuddy.Config.ShowSpearfishListIconsAsText)
             {
-                name = $"{name} ({fish.Size.ToName()} and {fish.Speed.ToName()})";
+                name = $"{name}（{fish.Size.ToName()}、{fish.Speed.ToName()}）";
             }
             else
             {
@@ -140,7 +140,7 @@ public partial class SpearfishingHelper : Window
         var xText = padding.X * 2
           + spacing.X
           + _iconSize
-          + _currentSpot.Items.Max(i => ImGui.CalcTextSize($"{i.Name[GatherBuddy.Language]} ({i.Size.ToName()} and {i.Speed.ToName()})").X)
+          + _currentSpot.Items.Max(i => ImGui.CalcTextSize($"{i.Name[GatherBuddy.Language]}（{i.Size.ToName()}、{i.Speed.ToName()}）").X)
           / ImGuiHelpers.GlobalScale;
         _listSizeIcons = new Vector2(xIcons, y);
         _listSizeText  = new Vector2(xText,  y);

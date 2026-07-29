@@ -235,7 +235,7 @@ public partial class Interface
         var       i              = idx;
         var       annotationEdit = _gatherGroupCache.AnnotationEditIdx;
         ImGui.TableNextColumn();
-        if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Trash.ToIconString(), IconButtonSize, "删除此物品", false, true))
+        if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Trash.ToIconString(), IconButtonSize, "刪除此物品", false, true))
             if (_plugin.GatherGroupManager.ChangeGroupNode(group, i, null, null, null, null, true))
             {
                 --idx;
@@ -265,17 +265,17 @@ public partial class Interface
         DrawLocationInput(group, i, node);
         ImGui.TableNextColumn();
         var length = node.Length();
-        ImGuiUtil.DrawTextButton($"{length} 分钟", Vector2.Zero,
+        ImGuiUtil.DrawTextButton($"{length} 分鐘", Vector2.Zero,
             minutes < length ? ColorId.WarningBg.Value() : ImGui.GetColorU32(ImGuiCol.FrameBg));
         if (minutes < length)
-            HoverTooltip($"有 {length - minutes} 分钟被更早的可采集物品出现时段所覆盖");
+            HoverTooltip($"有 {length - minutes} 分鐘被更早的可採集物品出現時段所覆蓋");
 
 
         ImGui.TableNextColumn();
         var annotation = node.Annotation;
         if (_gatherGroupCache.AnnotationEditIdx != i)
         {
-            ImGuiComponents.HelpMarker(annotation.Length > 0 ? annotation : "No annotation. Right-click to edit.");
+            ImGuiComponents.HelpMarker(annotation.Length > 0 ? annotation : "沒有註記。按右鍵編輯。");
             if (ImGui.IsItemClicked(ImGuiMouseButton.Right))
             {
                 _gatherGroupCache.AnnotationEditIdx = i;
@@ -290,7 +290,7 @@ public partial class Interface
         else
         {
             ImGui.SetNextItemWidth(400 * ImGuiHelpers.GlobalScale);
-            if (ImGui.InputTextWithHint("##annotation", "Annotation...", ref annotation, 256, ImGuiInputTextFlags.EnterReturnsTrue)
+            if (ImGui.InputTextWithHint("##annotation", "註記…", ref annotation, 256, ImGuiInputTextFlags.EnterReturnsTrue)
              && _plugin.GatherGroupManager.ChangeGroupNode(group, i, null, null, null, annotation, false))
                 _plugin.GatherGroupManager.Save();
             if (annotationEdit == _gatherGroupCache.AnnotationEditIdx && !ImGui.IsItemActive())
@@ -301,7 +301,7 @@ public partial class Interface
     private static void DrawMissingTimesHint(bool missingTimes)
     {
         if (missingTimes)
-            ImGuiUtil.DrawTextButton("Not all minutes have a corresponding item.", new Vector2(-ImGui.GetStyle().WindowPadding.X, 0),
+            ImGuiUtil.DrawTextButton("部分時段沒有對應物品。", new Vector2(-ImGui.GetStyle().WindowPadding.X, 0),
                 ColorId.WarningBg.Value());
     }
 
@@ -319,7 +319,7 @@ public partial class Interface
 
         var idx = _gatherGroupCache.NewItemIdx;
         ImGui.TableNextColumn();
-        if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Plus.ToIconString(), IconButtonSize, "Add new item...", false, true))
+        if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Plus.ToIconString(), IconButtonSize, "新增物品…", false, true))
         {
             var gatherable = GatherGroupCache.AllGatherables[idx];
             if (gatherable.InternalLocationId > 0)
@@ -362,13 +362,13 @@ public partial class Interface
         if (newName.Length == 0)
         {
             ImGui.SameLine();
-            ImGuiUtil.DrawTextButton("名称不能为空", Vector2.Zero, ColorId.WarningBg.Value());
+            ImGuiUtil.DrawTextButton("名稱不能為空", Vector2.Zero, ColorId.WarningBg.Value());
             r = false;
         }
         else if (newName != group.Name && _plugin.GatherGroupManager.Groups.ContainsKey(newName.ToLowerInvariant().Trim()))
         {
             ImGui.SameLine();
-            ImGuiUtil.DrawTextButton("名称已经被使用", Vector2.Zero, ColorId.WarningBg.Value());
+            ImGuiUtil.DrawTextButton("名稱已經被使用", Vector2.Zero, ColorId.WarningBg.Value());
             r = false;
         }
 
@@ -399,7 +399,7 @@ public partial class Interface
 
     private void DrawGatherGroupHeaderLine()
     {
-        if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Copy.ToIconString(), IconButtonSize, "复制当前采集组到剪贴板",
+        if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Copy.ToIconString(), IconButtonSize, "複製當前採集組到剪貼簿",
                 _gatherGroupCache.Selector.Current == null, true))
         {
             var group = _gatherGroupCache.Selector.Current!;
@@ -407,22 +407,22 @@ public partial class Interface
             {
                 var s = group.ToConfig().ToBase64();
                 ImGui.SetClipboardText(s);
-                Communicator.PrintClipboardMessage("采集组 ", group.Name);
+                Communicator.PrintClipboardMessage("採集組 ", group.Name);
             }
             catch (Exception e)
             {
-                Communicator.PrintClipboardMessage("采集组 ", group.Name, e);
+                Communicator.PrintClipboardMessage("採集組 ", group.Name, e);
             }
         }
 
-        if (ImGuiUtil.DrawDisabledButton("创建自动采集列表", Vector2.Zero, "为该采集组新建一个自动采集列表",
+        if (ImGuiUtil.DrawDisabledButton("建立自動採集列表", Vector2.Zero, "為該採集組新建一個自動採集列表",
                 _gatherGroupCache.Selector.Current == null))
         {
             var preset = new AutoGatherList(_gatherGroupCache.Selector.Current!);
             _plugin.AutoGatherListsManager.AddList(preset);
         }
 
-        if (ImGuiUtil.DrawDisabledButton("创建采集窗口预设", Vector2.Zero, "为该采集组新建一个采集窗口预设",
+        if (ImGuiUtil.DrawDisabledButton("建立採集視窗預設", Vector2.Zero, "為該採集組新建一個採集視窗預設",
                 _gatherGroupCache.Selector.Current == null))
         {
             var preset = new GatherWindowPreset(_gatherGroupCache.Selector.Current!);
@@ -430,7 +430,7 @@ public partial class Interface
         }
 
 
-        if (ImGuiUtil.DrawDisabledButton("创建闹钟", Vector2.Zero, "创建当前采集组的采集闹钟",
+        if (ImGuiUtil.DrawDisabledButton("建立鬧鐘", Vector2.Zero, "建立當前採集組的採集鬧鐘",
                 _gatherGroupCache.Selector.Current == null))
         {
             var preset = new AlarmGroup(_gatherGroupCache.Selector.Current!);
@@ -439,7 +439,7 @@ public partial class Interface
 
         var       holdingCtrl = ImGui.GetIO().KeyCtrl;
         using var color       = ImRaii.PushColor(ImGuiCol.ButtonHovered, 0x8000A000, holdingCtrl);
-        if (ImGui.Button("重新加载默认组") && holdingCtrl && _plugin.GatherGroupManager.SetDefaults(true))
+        if (ImGui.Button("重新載入預設組") && holdingCtrl && _plugin.GatherGroupManager.SetDefaults(true))
         {
             _gatherGroupCache.Selector.TryRestoreCurrent();
             _plugin.GatherGroupManager.Save();
@@ -450,15 +450,15 @@ public partial class Interface
 
         ImGui.SameLine();
 
-        ImGuiComponents.HelpMarker("使用 /gathergroup [name] [可选:延迟 (分钟)] 来执行一个采集组 \n"
-          + "执行后将会采集对应采集组里当前可用或在预设延迟时可用的物品\n"
-          + "如果存在多个可采集物品, 则按照采集组列表内由上到下的优先级顺序执行采集");
+        ImGuiComponents.HelpMarker("使用 /gathergroup [name] [可選:延遲 (分鐘)] 來執行一個採集組 \n"
+          + "執行後將會採集對應採集組裡當前可用或在預設延遲時可用的物品\n"
+          + "如果存在多個可採集物品, 則按照採集組列表內由上到下的優先順序順序執行採集");
     }
 
     private void DrawGatherGroupTab()
     {
-        using var id  = ImRaii.PushId("Gather Groups");
-        using var tab = ImRaii.TabItem("采集组");
+        using var id  = ImRaii.PushId("採集組");
+        using var tab = ImRaii.TabItem("採集組");
 
         if (!tab)
             return;
@@ -466,7 +466,7 @@ public partial class Interface
         _gatherGroupCache.Selector.Draw(SelectorWidth);
         ImGui.SameLine();
 
-        ItemDetailsWindow.Draw("Group Details", DrawGatherGroupHeaderLine, () =>
+        ItemDetailsWindow.Draw("採集組詳細資訊", DrawGatherGroupHeaderLine, () =>
         {
             if (_gatherGroupCache.Selector.Current != null)
                 DrawGatherGroup(_gatherGroupCache.Selector.Current);

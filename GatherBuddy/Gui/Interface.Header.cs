@@ -82,7 +82,7 @@ public partial class Interface
         var alarmData = which ? _plugin.AlarmManager.LastItemAlarm : _plugin.AlarmManager.LastFishAlarm;
         if (alarmData == null)
         {
-            ImGuiUtil.DrawDisabledButton(failureText, _headerCache.AlarmButtonSize, "Click to /gather this alarm.", true);
+            ImGuiUtil.DrawDisabledButton(failureText, _headerCache.AlarmButtonSize, "點選以使用 /gather 採集此鬧鐘物品。", true);
             return;
         }
 
@@ -102,10 +102,10 @@ public partial class Interface
     }
 
     private void DrawLastItemAlarm()
-        => DrawLastAlarm(true, "无已触发的采集闹钟");
+        => DrawLastAlarm(true, "無已觸發的採集鬧鐘");
 
     private void DrawLastFishAlarm()
-        => DrawLastAlarm(false, "无已触发的钓鱼闹钟");
+        => DrawLastAlarm(false, "無已觸發的釣魚鬧鐘");
 
 
     private void DrawAlarmRow()
@@ -126,9 +126,9 @@ public partial class Interface
         if (ImGui.IsItemHovered())
         {
             using var tt = ImRaii.Tooltip();
-            ImGui.TextUnformatted("如果游戏中的艾欧泽亚时间不一致，请验证您的Windows系统时间是否准确。");
-            ImGui.TextUnformatted($"下一近海航线: {OceanUptime.NextOceanRoute(OceanArea.近海, TimeStamp.UtcNow)}");
-            ImGui.TextUnformatted($"下一远洋航线: {OceanUptime.NextOceanRoute(OceanArea.远洋,     TimeStamp.UtcNow)}");
+            ImGui.TextUnformatted("如果遊戲中的艾歐澤亞時間不一致，請驗證您的Windows系統時間是否準確。");
+            ImGui.TextUnformatted($"下一近海航線: {OceanUptime.NextOceanRoute(OceanArea.近海, TimeStamp.UtcNow)}");
+            ImGui.TextUnformatted($"下一遠洋航線: {OceanUptime.NextOceanRoute(OceanArea.远洋,     TimeStamp.UtcNow)}");
         }
     }
 
@@ -166,7 +166,7 @@ public partial class Interface
             DrawIcon(_headerCache.NextWeather, _headerCache.NextWeatherIcon, WeatherIconSize);
         }
         if (ImGui.IsItemHovered())
-            ImGui.SetTooltip("距离切换至下一天气剩余的时间");
+            ImGui.SetTooltip("距離切換至下一天氣剩餘的時間");
     }
 
     private void DrawTimeRow()
@@ -189,7 +189,7 @@ public partial class Interface
         using var _ = ImRaii.Group();
         DrawEorzeaTime($"ET {GatherBuddy.Time.EorzeaHourOfDay:D2}:{GatherBuddy.Time.EorzeaMinuteOfHour:D2}");
         ImGui.SameLine();
-        DrawNextEorzeaHour($"距下一小时还有 {nextHourM:D2}:{nextHourS:D2} 分钟", new Vector2(width, WeatherIconSize.Y));
+        DrawNextEorzeaHour($"距下一小時還有 {nextHourM:D2}:{nextHourS:D2} 分鐘", new Vector2(width, WeatherIconSize.Y));
         ImGui.SameLine();
         DrawNextWeather(nextWeatherString);
     }

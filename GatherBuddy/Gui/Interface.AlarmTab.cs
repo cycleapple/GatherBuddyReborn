@@ -23,7 +23,7 @@ public partial class Interface
         => name.Length > 0 ? name : "<未命名>";
 
     private static string CheckUndescribed(string desc)
-        => desc.Length > 0 ? desc : "<无描述>";
+        => desc.Length > 0 ? desc : "<無描述>";
 
 
     private class AlarmWindowDragDropData
@@ -96,7 +96,7 @@ public partial class Interface
                 };
 
                 if (group.Alarms.Count < configGroup.Alarms.Count())
-                    GatherBuddy.Log.Warning("已跳过无效的闹钟");
+                    GatherBuddy.Log.Warning("已跳過無效的鬧鐘");
 
                 _manager.AddGroup(group);
                 return true;
@@ -132,7 +132,7 @@ public partial class Interface
 
         public static readonly Sounds[] SoundIds = Enum.GetValues<Sounds>().Where(s => s != Sounds.Unknown).ToArray();
 
-        public static readonly string[] SoundIdNames = SoundIds.Select(s => s == Sounds.None ? "无音效" : $"音效 {s.ToIdx()}").ToArray();
+        public static readonly string[] SoundIdNames = SoundIds.Select(s => s == Sounds.None ? "無音效" : $"音效 {s.ToIdx()}").ToArray();
 
         public readonly AlarmSelector  Selector;
         public readonly TimedItemCombo ItemCombo = new(string.Empty);
@@ -170,19 +170,19 @@ public partial class Interface
         var       enabled = alarm.Enabled;
 
         ImGui.TableNextColumn();
-        if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Trash.ToIconString(), IconButtonSize, "删除此闹钟...", false, true))
+        if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Trash.ToIconString(), IconButtonSize, "刪除此鬧鐘...", false, true))
             _plugin.AlarmManager.DeleteAlarm(group, alarmIdx--);
         ImGui.TableNextColumn();
         ImGui.SetNextItemWidth(SetInputWidth);
         var name = alarm.Name;
         if (ImGui.InputTextWithHint("##name", CheckUnnamed(string.Empty), ref name, 64))
             _plugin.AlarmManager.ChangeAlarmName(group, alarmIdx, name);
-        ImGuiUtil.HoverTooltip("闹钟名称将用于相关输出信息之中, 可为空");
+        ImGuiUtil.HoverTooltip("鬧鐘名稱將用於相關輸出資訊之中, 可為空");
 
         ImGui.TableNextColumn();
         if (ImGui.Checkbox("##Enabled", ref enabled) && enabled != alarm.Enabled)
             _plugin.AlarmManager.ToggleAlarm(group, alarmIdx);
-        ImGuiUtil.HoverTooltip("启用此闹钟");
+        ImGuiUtil.HoverTooltip("啟用此鬧鐘");
 
         ImGui.TableNextColumn();
         if (_alarmCache.ItemCombo.Draw(alarm.Item.InternalLocationId - 1, out var newIdx))
@@ -202,13 +202,13 @@ public partial class Interface
 
         if (ImGui.IsItemDeactivated())
             _plugin.AlarmManager.ChangeAlarmOffset(group, alarmIdx, Math.Clamp(_alarmCache.ChangedSecondOffset, 0, RealTime.SecondsPerDay));
-        ImGuiUtil.HoverTooltip("闹钟触发将略早于物品激活的时间。");
+        ImGuiUtil.HoverTooltip("鬧鐘觸發將略早於物品啟用的時間。");
 
         ImGui.TableNextColumn();
         var printMessage = alarm.PrintMessage;
         if (ImGui.Checkbox("##PrintMessage", ref printMessage))
             _plugin.AlarmManager.ChangeAlarmMessage(group, alarmIdx, printMessage);
-        ImGuiUtil.HoverTooltip("闹钟触发时输出聊天消息。");
+        ImGuiUtil.HoverTooltip("鬧鐘觸發時輸出聊天訊息。");
 
         ImGui.TableNextColumn();
         var idx = alarm.SoundId.ToIdx();
@@ -218,7 +218,7 @@ public partial class Interface
             _plugin.AlarmManager.ChangeAlarmSound(group, alarmIdx, AlarmCache.SoundIds[idx]);
             AlarmManager.PreviewAlarm(AlarmCache.SoundIds[idx]);
         }
-        ImGuiUtil.HoverTooltip("闹钟触发时播放声音效果。");
+        ImGuiUtil.HoverTooltip("鬧鐘觸發時播放聲音效果。");
 
         ImGui.TableNextColumn();
         if (DrawLocationInput(alarm.Item, alarm.PreferLocation, out var newLocation))
@@ -231,7 +231,7 @@ public partial class Interface
         if (time.Start > now)
             ImGuiUtil.DrawTextButton(TimeInterval.DurationString(time.Start, now, false), size, ColorId.WarningBg.Value());
         else
-            ImGuiUtil.DrawTextButton("当前触发器", size, ColorId.ChangedLocationBg.Value());
+            ImGuiUtil.DrawTextButton("當前觸發器", size, ColorId.ChangedLocationBg.Value());
     }
 
     private void DrawGroupData(AlarmGroup group, int idx)
@@ -244,10 +244,10 @@ public partial class Interface
                 out var newDesc, ref _alarmCache.EditGroupDesc, IconButtonSize, 2 * SetInputWidth, 128))
             _plugin.AlarmManager.ChangeGroupDescription(idx, newDesc);
         var enabled = group.Enabled;
-        if (ImGui.Checkbox("Enabled", ref enabled) && enabled != group.Enabled)
+        if (ImGui.Checkbox("啟用", ref enabled) && enabled != group.Enabled)
             _plugin.AlarmManager.ToggleGroup(idx);
         ImGuiUtil.HoverTooltip(
-            "启用此闹钟组。只有启用自身的组中的那些闹钟才能被视为活动状态。");
+            "啟用此鬧鐘組。只有啟用自身的組中的那些鬧鐘才能被視為活動狀態。");
     }
 
     private void DrawToggleAll(AlarmGroup group)
@@ -257,7 +257,7 @@ public partial class Interface
         ImGui.TableNextColumn();
         var allEnabled = group.Alarms.All(a => a.Enabled);
         var ret        = ImGui.Checkbox("##allEnabled", ref allEnabled);
-        ImGuiUtil.HoverTooltip("启用所有禁用中的闹钟，或禁用所有闹钟。");
+        ImGuiUtil.HoverTooltip("啟用所有禁用中的鬧鐘，或禁用所有鬧鐘。");
 
         if (!ret)
             return;
@@ -284,7 +284,7 @@ public partial class Interface
 
         using var id = ImRaii.PushId(-1);
         ImGui.TableNextColumn();
-        if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Plus.ToIconString(), IconButtonSize, "Add new Alarm...", false, true))
+        if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Plus.ToIconString(), IconButtonSize, "新增鬧鐘…", false, true))
             _plugin.AlarmManager.AddAlarm(group, _alarmCache.CreateAlarm());
         ImGui.TableNextColumn();
         ImGui.SetNextItemWidth(SetInputWidth);
@@ -317,7 +317,7 @@ public partial class Interface
 
     private void DrawAlarmGroupHeaderLine()
     {
-        if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Copy.ToIconString(), IconButtonSize, "将当前闹钟组复制到剪贴板。",
+        if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Copy.ToIconString(), IconButtonSize, "將當前鬧鐘組複製到剪貼簿。",
                 _alarmCache.Selector.Current == null, true))
         {
             var group = _alarmCache.Selector.Current!;
@@ -325,16 +325,16 @@ public partial class Interface
             {
                 var s = new AlarmGroup.Config(group).ToBase64();
                 ImGui.SetClipboardText(s);
-                Communicator.PrintClipboardMessage("闹钟组 ", group.Name);
+                Communicator.PrintClipboardMessage("鬧鐘組 ", group.Name);
             }
             catch (Exception e)
             {
-                GatherBuddy.Log.Error($"无法将闹钟组 {group.Name} 复制到剪贴板:\n{e}");
-                Communicator.PrintClipboardMessage("闹钟组 ", group.Name, e);
+                GatherBuddy.Log.Error($"無法將鬧鐘組 {group.Name} 複製到剪貼簿:\n{e}");
+                Communicator.PrintClipboardMessage("鬧鐘組 ", group.Name, e);
             }
         }
 
-        if (ImGuiUtil.DrawDisabledButton("创建窗口", Vector2.Zero, "由当前闹钟组新建一个采集窗口。",
+        if (ImGuiUtil.DrawDisabledButton("建立視窗", Vector2.Zero, "由當前鬧鐘組新建一個採集視窗。",
                 _alarmCache.Selector.Current == null))
         {
             var preset = new GatherWindowPreset(_alarmCache.Selector.Current!);
@@ -343,14 +343,14 @@ public partial class Interface
 
         ImGui.SameLine();
 
-        ImGuiComponents.HelpMarker("使用 /gather alarm 以采集上一个闹钟触发的物品\n"
-          + "使用 /gatherfish alarm 以采集上一个闹钟触发的鱼");
+        ImGuiComponents.HelpMarker("使用 /gather alarm 以採集上一個鬧鐘觸發的物品\n"
+          + "使用 /gatherfish alarm 以採集上一個鬧鐘觸發的魚");
     }
 
     private void DrawAlarmTab()
     {
-        using var id  = ImRaii.PushId("Alarms");
-        using var tab = ImRaii.TabItem("闹钟");
+        using var id  = ImRaii.PushId("鬧鐘");
+        using var tab = ImRaii.TabItem("鬧鐘");
 
         if (!tab)
             return;
@@ -358,7 +358,7 @@ public partial class Interface
         _alarmCache.Selector.Draw(SelectorWidth);
         ImGui.SameLine();
 
-        ItemDetailsWindow.Draw("闹钟组详情", DrawAlarmGroupHeaderLine, () =>
+        ItemDetailsWindow.Draw("鬧鐘組詳情", DrawAlarmGroupHeaderLine, () =>
         {
             if (_alarmCache.Selector.Current != null)
                 DrawAlarmInfo(_alarmCache.Selector.Current, _alarmCache.Selector.CurrentIdx);
