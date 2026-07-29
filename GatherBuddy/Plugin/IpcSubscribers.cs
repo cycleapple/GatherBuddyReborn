@@ -257,6 +257,8 @@ namespace GatherBuddy.Plugin
 
     internal static class AutoHook
     {
+        private static readonly HashSet<string> UnavailableMethods = [];
+
         static AutoHook()
         {
             EzIPC.Init(typeof(AutoHook), "AutoHook");
@@ -265,25 +267,69 @@ namespace GatherBuddy.Plugin
         internal static bool Enabled => IPCSubscriber.IsReady("AutoHook");
 
         [EzIPC("AutoHook.SetPluginState", applyPrefix: false)]
-        internal static readonly Action<bool> SetPluginState;
+        private static readonly Action<bool> SetPluginStateIpc;
+        internal static readonly Action<bool> SetPluginState =
+            state => Invoke(SetPluginStateIpc, state, "SetPluginState");
 
         [EzIPC("AutoHook.SetAutoStartFishing", applyPrefix: false)]
-        internal static readonly Action<bool> SetAutoStartFishing;
+        private static readonly Action<bool> SetAutoStartFishingIpc;
+        internal static readonly Action<bool> SetAutoStartFishing =
+            state => Invoke(SetAutoStartFishingIpc, state, "SetAutoStartFishing");
 
         [EzIPC("AutoHook.SetAutoGigState", applyPrefix: false)]
-        internal static readonly Action<bool> SetAutoGigState;
+        private static readonly Action<bool> SetAutoGigStateIpc;
+        internal static readonly Action<bool> SetAutoGigState =
+            state => Invoke(SetAutoGigStateIpc, state, "SetAutoGigState");
 
         [EzIPC("AutoHook.CreateAndSelectAnonymousPreset", applyPrefix: false)]
-        internal static readonly Action<string> CreateAndSelectAnonymousPreset;
+        private static readonly Action<string> CreateAndSelectAnonymousPresetIpc;
+        internal static readonly Action<string> CreateAndSelectAnonymousPreset =
+            preset => Invoke(CreateAndSelectAnonymousPresetIpc, preset, "CreateAndSelectAnonymousPreset");
         
         [EzIPC("AutoHook.ImportAndSelectPreset", applyPrefix: false)]
-        internal static readonly Action<string> ImportAndSelectPreset;
+        private static readonly Action<string> ImportAndSelectPresetIpc;
+        internal static readonly Action<string> ImportAndSelectPreset =
+            preset => Invoke(ImportAndSelectPresetIpc, preset, "ImportAndSelectPreset");
         
         [EzIPC("AutoHook.SetPreset", applyPrefix: false)]
-        internal static readonly Action<string> SetPreset;
+        private static readonly Action<string> SetPresetIpc;
+        internal static readonly Action<string> SetPreset =
+            preset => Invoke(SetPresetIpc, preset, "SetPreset");
         
         [EzIPC("AutoHook.DeleteSelectedPreset", applyPrefix: false)]
-        internal static readonly Action DeleteSelectedPreset;
+        private static readonly Action DeleteSelectedPresetIpc;
+        internal static readonly Action DeleteSelectedPreset =
+            () => Invoke(DeleteSelectedPresetIpc, "DeleteSelectedPreset");
+
+        private static void Invoke(Action action, string method)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception e)
+            {
+                ReportUnavailable(method, e);
+            }
+        }
+
+        private static void Invoke<T>(Action<T> action, T value, string method)
+        {
+            try
+            {
+                action(value);
+            }
+            catch (Exception e)
+            {
+                ReportUnavailable(method, e);
+            }
+        }
+
+        private static void ReportUnavailable(string method, Exception exception)
+        {
+            if (UnavailableMethods.Add(method))
+                Svc.Log.Warning($"AutoHook IPC method {method} is not ready; integration will retry later. {exception.Message}");
+        }
     }
 
     internal static class AutoRetainer
