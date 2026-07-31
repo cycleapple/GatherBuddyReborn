@@ -398,7 +398,11 @@ public static partial class Fish
         data.ApplyDawntrail();
         data.ApplyCrossroads();
         data.ApplySeekersOfEternity();
-        data.ApplyThePromiseOfTomorrow();
+        // Some regional 7.3 clients do not ship The Promise of Tomorrow
+        // FishParameter rows yet. Do not apply international catch data until
+        // the corresponding game data actually exists.
+        if (data.Fishes.ContainsKey(46188))
+            data.ApplyThePromiseOfTomorrow();
         data.ApplyMooches();
         data.ApplyOverrides();
         //DumpUnknown(Patch.SeekersOfEternity, data.Fishes.Values);

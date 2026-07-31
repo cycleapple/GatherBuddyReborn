@@ -32,7 +32,7 @@ public static class HiddenMaps
         {
             if (!data.Gatherables.TryGetValue(map, out var mapItem))
             {
-                data.Log.Error($"Could not find map item {map}.");
+                data.Log.Debug($"Skipping map item {map}, which is unavailable in this regional client.");
                 continue;
             }
 
