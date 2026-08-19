@@ -53,6 +53,7 @@ namespace GatherBuddy.AutoGather
             _plugin                      =  plugin;
             _soundHelper                 =  new SoundHelper();
             _advancedUnstuck             =  new();
+            _antiStuckManager            =  new(_advancedUnstuck);
             _activeItemList              =  new ActiveItemList(plugin.AutoGatherListsManager, this);
             ArtisanExporter              =  new Reflection.ArtisanExporter(plugin.AutoGatherListsManager);
             Svc.Chat.CheckMessageHandled += OnMessageHandled;
@@ -112,6 +113,7 @@ namespace GatherBuddy.AutoGather
         private readonly GatherBuddy     _plugin;
         private readonly SoundHelper     _soundHelper;
         private readonly AdvancedUnstuck _advancedUnstuck;
+        private readonly AntiStuckManager _antiStuckManager;
         private readonly ActiveItemList  _activeItemList;
 
         public Reflection.ArtisanExporter ArtisanExporter;
@@ -199,6 +201,8 @@ namespace GatherBuddy.AutoGather
             }
 
                 _enabled = value;
+                HandleEnabledStateChange(value);
+                _antiStuckManager.OnEnabledChanged(value);
                 _plugin.Ipc.AutoGatherEnabledChanged(value);
             }
         }
@@ -261,6 +265,9 @@ namespace GatherBuddy.AutoGather
 
         public void DoAutoGather()
         {
+            if (HandleScheduledCommand())
+                return;
+
             var currentTerritory = Svc.ClientState.TerritoryType;
             if (_lastTerritory != currentTerritory)
             {
@@ -514,7 +521,7 @@ namespace GatherBuddy.AutoGather
                     {
                         var pathGenerating = IsPathGenerating;
                         var pathing = IsPathing;
-                        var unstuckResult = _advancedUnstuck.Check(CurrentDestination, pathGenerating, pathing);
+                        var unstuckResult = CheckAntiStuck(pathGenerating, pathing);
                         if (unstuckResult == AdvancedUnstuckCheckResult.Fail)
                         {
                             StopNavigation();
@@ -590,7 +597,7 @@ namespace GatherBuddy.AutoGather
             var isPathGenerating = IsPathGenerating;
             var isPathing        = IsPathing;
 
-            switch (_advancedUnstuck.Check(CurrentDestination, isPathGenerating, isPathing))
+            switch (CheckAntiStuck(isPathGenerating, isPathing))
             {
                 case AdvancedUnstuckCheckResult.Pass: break;
                 case AdvancedUnstuckCheckResult.Wait: return;
@@ -2362,6 +2369,7 @@ namespace GatherBuddy.AutoGather
 
         public void Dispose()
         {
+            _antiStuckManager.Dispose();
             _advancedUnstuck.Dispose();
             _activeItemList.Dispose();
             Svc.Chat.CheckMessageHandled -= OnMessageHandled;

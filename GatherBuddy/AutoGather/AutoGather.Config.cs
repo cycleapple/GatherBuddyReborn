@@ -51,6 +51,7 @@ namespace GatherBuddy.AutoGather
         [Obsolete] public uint MinimumGPForCollectable { get; set; } = 0;
         public float NavResetCooldown { get; set; } = 3.0f;
         public float NavResetThreshold { get; set; } = 2.0f;
+        public AntiStuckConfig AntiStuck { get; set; } = new();
         public bool ForceWalking { get; set; } = false;
         public float FarNodeFilterDistance { get; set; } = 50.0f;
         public bool DisableFlagPathing { get; set; } = false;
@@ -94,6 +95,31 @@ namespace GatherBuddy.AutoGather
         public bool IdenticalCastGPAbove { get; set; } = true;
         public bool AutoCollectablesFishing { get; set; } = true;
         public bool DiademAutoAetherCannon { get; set; } = false;
+        public bool EnableScheduledCommand { get; set; } = false;
+        public string ScheduledCommand { get; set; } = "/li auto";
+        public int ScheduledCommandIntervalMinutes { get; set; } = 60;
+        public int ScheduledCommandResumeDelayMinutes { get; set; } = 5;
+        public bool CloseGatheringUiBeforeScheduledCommand { get; set; } = true;
+
+        public enum PositionUnstuckAction
+        {
+            Off,
+            TeleportAetheryte,
+            GoHome,
+        }
+
+        public sealed class AntiStuckConfig
+        {
+            public bool Enabled { get; set; } = true;
+            public bool LocalRecoveryEnabled { get; set; } = true;
+            public bool EscalationEnabled { get; set; } = false;
+            public int EscalationAfterFails { get; set; } = 3;
+            public float AreaRadius { get; set; } = 50.0f;
+            public int AreaTimeSeconds { get; set; } = 600;
+            public PositionUnstuckAction DrasticAction { get; set; } = PositionUnstuckAction.TeleportAetheryte;
+            public int DrasticCooldownSeconds { get; set; } = 600;
+            public int MaxDrasticPerSession { get; set; } = 2;
+        }
 
         public enum SortingType
         {

@@ -312,6 +312,126 @@ public partial class Interface
             ImGuiUtil.HoverTooltip("多少秒之後導航系統將會判定你是否卡死。");
         }
 
+        public static void DrawAntiStuckSettings()
+        {
+            var config = GatherBuddy.Config.AutoGatherConfig.AntiStuck;
+            DrawCheckbox("啟用防卡死功能",
+                "先使用隨機位移做近端復原；多次復原仍失敗且持續停在同一區域時，可升級為傳送或回家。",
+                config.Enabled, b => config.Enabled = b);
+            if (!config.Enabled)
+                return;
+
+            ImGui.Indent();
+            DrawCheckbox("啟用近端復原", "偵測 vnavmesh 卡住時嘗試短暫隨機移動。",
+                config.LocalRecoveryEnabled, b => config.LocalRecoveryEnabled = b);
+            DrawCheckbox("啟用升級措施", "達到近端復原失敗次數後，才開始計算區域停滯時間。預設關閉。",
+                config.EscalationEnabled, b => config.EscalationEnabled = b);
+
+            if (config.EscalationEnabled)
+            {
+                ImGui.Indent();
+                var failures = config.EscalationAfterFails;
+                ImGui.SetNextItemWidth(SetInputWidth);
+                if (ImGui.SliderInt("復原失敗次數", ref failures, 1, 10))
+                {
+                    config.EscalationAfterFails = Math.Clamp(failures, 1, 10);
+                    GatherBuddy.Config.Save();
+                }
+                ImGuiUtil.HoverTooltip("至少觸發幾次近端復原後，才允許強制措施。");
+
+                var radius = config.AreaRadius;
+                ImGui.SetNextItemWidth(SetInputWidth);
+                if (ImGui.SliderFloat("停滯區域半徑", ref radius, 10, 100, "%.0f yalms"))
+                {
+                    config.AreaRadius = Math.Clamp(radius, 10, 100);
+                    GatherBuddy.Config.Save();
+                }
+
+                var seconds = config.AreaTimeSeconds;
+                ImGui.SetNextItemWidth(SetInputWidth);
+                if (ImGui.SliderInt("區域停滯時間（秒）", ref seconds, 30, 600))
+                {
+                    config.AreaTimeSeconds = Math.Clamp(seconds, 30, 600);
+                    GatherBuddy.Config.Save();
+                }
+
+                var action = (int)config.DrasticAction;
+                var actions = new[] { "不執行", "傳送至區域內以太之光並繼續", "使用 Lifestream 回家並停止" };
+                ImGui.SetNextItemWidth(SetInputWidth * 1.5f);
+                if (ImGui.Combo("強制措施", ref action, actions, actions.Length))
+                {
+                    config.DrasticAction = (AutoGatherConfig.PositionUnstuckAction)action;
+                    GatherBuddy.Config.Save();
+                }
+
+                if (ImGui.TreeNodeEx("進階設定##AntiStuckAdvanced"))
+                {
+                    var cooldown = config.DrasticCooldownSeconds;
+                    ImGui.SetNextItemWidth(SetInputWidth);
+                    if (ImGui.SliderInt("強制措施冷卻（秒）", ref cooldown, 60, 1800))
+                    {
+                        config.DrasticCooldownSeconds = Math.Clamp(cooldown, 60, 1800);
+                        GatherBuddy.Config.Save();
+                    }
+
+                    var maximum = config.MaxDrasticPerSession;
+                    ImGui.SetNextItemWidth(SetInputWidth);
+                    if (ImGui.SliderInt("每次啟用上限", ref maximum, 1, 10))
+                    {
+                        config.MaxDrasticPerSession = Math.Clamp(maximum, 1, 10);
+                        GatherBuddy.Config.Save();
+                    }
+                    ImGui.TreePop();
+                }
+                ImGui.Unindent();
+            }
+            ImGui.Unindent();
+        }
+
+        public static void DrawScheduledCommandSettings()
+        {
+            var config = GatherBuddy.Config.AutoGatherConfig;
+            DrawCheckbox("啟用排程指令",
+                "自動採集啟用期間定期暫停，等待目前採集完成後執行指定指令，再自動恢復。",
+                config.EnableScheduledCommand, b => config.EnableScheduledCommand = b);
+            if (!config.EnableScheduledCommand)
+                return;
+
+            ImGui.Indent();
+            var interval = config.ScheduledCommandIntervalMinutes;
+            ImGui.SetNextItemWidth(SetInputWidth);
+            if (ImGui.SliderInt("執行間隔（分鐘）##ScheduledInterval", ref interval, 1, 240))
+            {
+                config.ScheduledCommandIntervalMinutes = Math.Clamp(interval, 1, 240);
+                GatherBuddy.Config.Save();
+            }
+
+            var command = config.ScheduledCommand;
+            ImGui.SetNextItemWidth(SetInputWidth * 1.5f);
+            if (ImGui.InputText("執行指令##ScheduledCommand", ref command, 200))
+            {
+                config.ScheduledCommand = command;
+                GatherBuddy.Config.Save();
+            }
+            ImGuiUtil.HoverTooltip("必須以 / 開頭，例如 /li auto。若為 /li 指令，恢復前也會確認 Lifestream 已完成。");
+
+            var delay = config.ScheduledCommandResumeDelayMinutes;
+            ImGui.SetNextItemWidth(SetInputWidth);
+            if (ImGui.SliderInt("最短恢復延遲（分鐘）##ScheduledDelay", ref delay, 1, 60))
+            {
+                config.ScheduledCommandResumeDelayMinutes = Math.Clamp(delay, 1, 60);
+                GatherBuddy.Config.Save();
+            }
+
+            DrawCheckbox("執行前關閉採集視窗", "排程指令執行前關閉採集相關視窗。",
+                config.CloseGatheringUiBeforeScheduledCommand, b => config.CloseGatheringUiBeforeScheduledCommand = b);
+
+            var status = GatherBuddy.AutoGather.GetScheduledCommandStatus();
+            if (!string.IsNullOrEmpty(status))
+                ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), $"[排程狀態] {status}");
+            ImGui.Unindent();
+        }
+
         public static void DrawSortingMethodCombo()
         {
             var v = GatherBuddy.Config.AutoGatherConfig.SortingMethod;
@@ -1104,6 +1224,8 @@ public partial class Interface
                 ConfigFunctions.DrawLifestreamCommandTextInput();
                 ConfigFunctions.DrawAntiStuckCooldown();
                 ConfigFunctions.DrawStuckThreshold();
+                ConfigFunctions.DrawAntiStuckSettings();
+                ConfigFunctions.DrawScheduledCommandSettings();
                 ConfigFunctions.DrawTimedNodePrecog();
                 ConfigFunctions.DrawExecutionDelay();
                 ConfigFunctions.DrawAutoGatherBox();

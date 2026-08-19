@@ -35,6 +35,9 @@ namespace GatherBuddy.AutoGather
             }
 
             ImGui.Text($"狀態: {GatherBuddy.AutoGather.AutoStatus}");
+            var scheduledStatus = GatherBuddy.AutoGather.GetScheduledCommandStatus();
+            if (!string.IsNullOrEmpty(scheduledStatus))
+                ImGui.TextColored(ImGuiColors.HealerGreen, $"排程: {scheduledStatus}");
             var lastNavString = GatherBuddy.AutoGather.LastNavigationResult.HasValue
                 ? GatherBuddy.AutoGather.LastNavigationResult.Value
                     ? "成功"
