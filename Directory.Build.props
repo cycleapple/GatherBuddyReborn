@@ -1,5 +1,5 @@
-﻿<Project>
+<Project>
     <PropertyGroup>
-        <Use_Dalamud_CN>true</Use_Dalamud_CN>
+        <Use_Dalamud_CN>false</Use_Dalamud_CN>
     </PropertyGroup>
 </Project>

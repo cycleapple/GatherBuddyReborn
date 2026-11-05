@@ -1,0 +1,20 @@
+[
+  {
+    "path": "ECommons",
+    "baseCommit": "6cfc5a577ffd9fa442f43aafa3c76245850af1f3",
+    "patch": "patches/e347001520b30beb.patch",
+    "sha256": "9cf86021ae269f5a9d4c8cfdd99bcd140c3dde4cdd46f524a75555fc582c2066"
+  },
+  {
+    "path": "OtterGui",
+    "baseCommit": "9523b7ac725656b21fa98faef96962652e86e64f",
+    "patch": "patches/fa3971c4e08c8077.patch",
+    "sha256": "3cca454cae7e6b11447342ab2e4c7aaef4e252d6336c2215a9e2bcd11a12dcae"
+  },
+  {
+    "path": "OtterGui/OtterGuiInternal",
+    "baseCommit": "49631aab5c267953f9d442546488ea3bfdf52fa7",
+    "patch": "patches/83d6c41b4082a781.patch",
+    "sha256": "9997cf5bc08788acb336cb58a8405138ba9a14a407dd295f4ccbd1bd4cafd5a1"
+  }
+]

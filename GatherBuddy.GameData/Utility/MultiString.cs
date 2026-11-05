@@ -33,8 +33,8 @@ public readonly struct MultiString(string en, string de, string fr, string jp, s
         var de = ParseSeStringLumina(gameData.GetExcelSheet<PlaceName>(ClientLanguage.German).GetRowOrDefault(id)?.Name);
         var fr = ParseSeStringLumina(gameData.GetExcelSheet<PlaceName>(ClientLanguage.French).GetRowOrDefault(id)?.Name);
         var jp = ParseSeStringLumina(gameData.GetExcelSheet<PlaceName>(ClientLanguage.Japanese).GetRowOrDefault(id)?.Name);
-        var zhCn = TryGetPlaceName(gameData, id, ClientLanguage.ChineseSimplified);
-        var zhTw = TryGetPlaceName(gameData, id, ClientLanguage.ChineseTraditional);
+        var zhCn = TryGetPlaceName(gameData, id, (ClientLanguage)4);
+        var zhTw = TryGetPlaceName(gameData, id, (ClientLanguage)5);
         return new MultiString(en, de, fr, jp, zhCn, zhTw);
     }
 
@@ -44,8 +44,8 @@ public readonly struct MultiString(string en, string de, string fr, string jp, s
         var de = ParseSeStringLumina(gameData.GetExcelSheet<Item>(ClientLanguage.German).GetRowOrDefault(id)?.Name);
         var fr = ParseSeStringLumina(gameData.GetExcelSheet<Item>(ClientLanguage.French).GetRowOrDefault(id)?.Name);
         var jp = ParseSeStringLumina(gameData.GetExcelSheet<Item>(ClientLanguage.Japanese).GetRowOrDefault(id)?.Name);
-        var zhCn = TryGetItemName(gameData, id, ClientLanguage.ChineseSimplified);
-        var zhTw = TryGetItemName(gameData, id, ClientLanguage.ChineseTraditional);
+        var zhCn = TryGetItemName(gameData, id, (ClientLanguage)4);
+        var zhTw = TryGetItemName(gameData, id, (ClientLanguage)5);
         return new MultiString(en, de, fr, jp, zhCn, zhTw);
     }
 
@@ -80,8 +80,8 @@ public readonly struct MultiString(string en, string de, string fr, string jp, s
             ClientLanguage.German   => German,
             ClientLanguage.Japanese => Japanese,
             ClientLanguage.French   => French,
-            ClientLanguage.ChineseSimplified  => ChineseSimplified.Length > 0 ? ChineseSimplified : English,
-            ClientLanguage.ChineseTraditional => ChineseTraditional.Length > 0 ? ChineseTraditional : English,
+            (ClientLanguage)4  => ChineseSimplified.Length > 0 ? ChineseSimplified : English,
+            (ClientLanguage)5 => ChineseTraditional.Length > 0 ? ChineseTraditional : English,
             _                       => English,
         };
 

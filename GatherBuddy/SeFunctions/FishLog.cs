@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Dalamud.Game;
@@ -30,8 +30,8 @@ public unsafe class FishLog
         _numSpearFish = (uint) gameData.GetExcelSheet<SpearfishingItem>().Count;
 
         ;
-        _fish      = (byte*)Unsafe.AsPointer(ref PlayerState.Instance()->CaughtFishBitmask[0]);
-        _spearFish = (byte*)Unsafe.AsPointer(ref PlayerState.Instance()->CaughtSpearfishBitmask[0]);
+        _fish      = (byte*)Unsafe.AsPointer(ref PlayerState.Instance()->CaughtFish[0]);
+        _spearFish = (byte*)Unsafe.AsPointer(ref PlayerState.Instance()->CaughtSpearfish[0]);
 
         _fishStore      = new byte[(_numFish + 7) / 8];
         _spearFishStore = new byte[(_numSpearFish + 7) / 8];

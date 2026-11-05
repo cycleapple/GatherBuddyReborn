@@ -5,8 +5,8 @@
   "RepoUrl": "https://github.com/FFXIV-CombatReborn/GatherBuddyReborn",
   "Description": "協助查找採集點、魚類及其位置，追蹤特殊出現時段與天氣條件，並可依自訂列表自動採集。自動採集功能需要 vnavmesh。",
   "ApplicableVersion": "any",
-  "DalamudApiLevel": 13,
-  "TestingDalamudApiLevel": 13,
+  "DalamudApiLevel": 14,
+  "TestingDalamudApiLevel": 14,
   "Tags": [
     "採集",
     "釣魚",

@@ -1,4 +1,4 @@
-﻿using ECommons.DalamudServices;
+using ECommons.DalamudServices;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Game.Addon.Lifecycle;
 using System;
@@ -110,7 +110,7 @@ namespace GatherBuddy.AutoGather
                 case AddonRefreshArgs rArgs:
                     ProcessArgs(rArgs.AtkValueSpan);
                     break;
-                case AddonFinalizeArgs:
+                case AddonArgs when type == AddonEvent.PreFinalize:
                     ResetArgs();
                     break;
             }
