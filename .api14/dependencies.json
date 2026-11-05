@@ -3,7 +3,7 @@
     "path": "ECommons",
     "baseCommit": "6cfc5a577ffd9fa442f43aafa3c76245850af1f3",
     "patch": "patches/e347001520b30beb.patch",
-    "sha256": "bef5d4e71d70a17370ba4af9bf7eb9cc459cdf66cc57b24dc90b22f46deab06e"
+    "sha256": "12e1f7a3c1af8e82132749f9bae232388146f886eef00ad133ef1f938ebb030c"
   },
   {
     "path": "OtterGui",
